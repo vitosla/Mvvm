@@ -7,15 +7,19 @@ import android.graphics.Bitmap;
 import com.vitos.mvvm.api.repo.IRepositoryFactory;
 import com.vitos.mvvm.events.SuccessfulUserUpdateEvent;
 import com.vitos.mvvm.models.User;
+import com.vitos.mvvm.models.UserDTO;
 import com.vitos.mvvm.models.repo.IUserRepository;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static android.arch.lifecycle.LiveDataReactiveStreams.fromPublisher;
 
 /**
  * Created by Victor on 05.06.2017.
@@ -36,25 +40,27 @@ public class Api {
         mCompositeDisposable
                 .add(repository.updateUser(user)
                         .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(new BaseDisposableSubscriber<Void>() {
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new BaseDisposableSubscriber<Void>() {
 
-                            @Override
-                            public void postSuccessful(Void data) {
-                                EventBus.getDefault().post(new SuccessfulUserUpdateEvent(user));
-                            }
-                        }));
+                    @Override
+                    public void postSuccessful(Void data) {
+                        EventBus.getDefault().post(new SuccessfulUserUpdateEvent(user));
+                    }
+                }));
     }
 
-    public LiveData<User> getUser(String id){
+    public Flowable<User> getUser(String id){
         final IUserRepository repository = mRepositoryFactory.getUserRepository();
-        return LiveDataReactiveStreams.fromPublisher(repository.getUser(id));
+        return repository.getUser(id);
         //     return Observable.defer(() -> repository.getUser(id));
     }
 
-    public LiveData<List<User>> getAllUsers(){
+    public Flowable<List<User>> getAllUsers(){
         final IUserRepository repository = mRepositoryFactory.getUserRepository();
-        return LiveDataReactiveStreams.fromPublisher(repository.getAllUsers());
+        return repository.getAllUsers();
+   //     LiveData<List<UserDTO>> result = fromPublisher(flu);
+   //     return null;
         //     return Observable.defer(() -> repository.getUser(id));
     }
 

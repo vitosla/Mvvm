@@ -22,7 +22,7 @@ import io.reactivex.subscribers.DisposableSubscriber;
  * Created by Victor on 05.06.2017.
  */
 
-abstract class BaseDisposableSubscriber<T> extends DisposableSubscriber<T> {
+public abstract class BaseDisposableSubscriber<T> extends DisposableSubscriber<T> {
 
     @Inject
     Context mAppContext;

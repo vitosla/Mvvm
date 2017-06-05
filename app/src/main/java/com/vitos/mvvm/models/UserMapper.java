@@ -3,7 +3,7 @@ package com.vitos.mvvm.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Victor on 05.06.2017.
@@ -40,10 +40,9 @@ public class UserMapper {
             return new ArrayList<>();
 
         return Observable
-                .from(dtoList)
+                .fromIterable(dtoList)
                 .map(this::map)
                 .toList()
-                .toBlocking()
-                .first();
+                .blockingGet();
     }
 }

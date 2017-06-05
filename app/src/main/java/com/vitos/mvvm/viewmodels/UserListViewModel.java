@@ -10,6 +10,8 @@ import com.vitos.mvvm.models.User;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 /**
  * Created by Victor on 05.06.2017.
  */
@@ -23,7 +25,12 @@ public class UserListViewModel extends ViewModel {
         mApi.setRepositoryFactory(new RepositoryFactory());
     }
 
-    public LiveData<List<User>> getUsers(){
+    public Flowable<List<User>> getUsers(){
         return mApi.getAllUsers();
     }
+
+    public Flowable<User> getUser(String id){
+        return mApi.getUser(id);
+    }
+
 }

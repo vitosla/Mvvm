@@ -2,6 +2,7 @@ package com.vitos.mvvm.api.retrofit;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+//import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.vitos.mvvm.BuildConfig;
 import com.vitos.mvvm.models.UserDTO;
 import com.vitos.mvvm.tools.DateHelper;
@@ -14,7 +15,8 @@ import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+//import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.Part;
@@ -39,7 +41,7 @@ public class RetrofitService implements IRetrofitService {
     private final IRetrofitService mCaller = new Retrofit.Builder()
             .baseUrl(BuildConfig.API_URL)
             .addConverterFactory(GsonConverterFactory.create(mGson))
-            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(mClient)
             .build()
             .create(IRetrofitService.class);

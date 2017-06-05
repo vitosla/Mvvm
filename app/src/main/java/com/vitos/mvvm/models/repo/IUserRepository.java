@@ -3,6 +3,7 @@ package com.vitos.mvvm.models.repo;
 import android.graphics.Bitmap;
 
 import com.vitos.mvvm.models.User;
+import com.vitos.mvvm.models.UserDTO;
 
 import java.util.List;
 
