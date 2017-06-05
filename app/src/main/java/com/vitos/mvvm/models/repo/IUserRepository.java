@@ -1,13 +1,12 @@
 package com.vitos.mvvm.models.repo;
 
-import android.arch.lifecycle.LiveData;
 import android.graphics.Bitmap;
 
 import com.vitos.mvvm.models.User;
 
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Flowable;
 
 /**
  * Created by Victor on 05.06.2017.
@@ -15,11 +14,11 @@ import rx.Observable;
 
 public interface IUserRepository {
 
-    Observable<Void> updateUser(User user);
+    Flowable<Void> updateUser(User user);
 
-    LiveData<User> getUser(String id);
+    Flowable<User> getUser(String id);
 
-    LiveData<List<User>> getAllUsers();
+    Flowable<List<User>> getAllUsers();
 
-    Observable<Void> postImage(String id, Bitmap bitmap);
+    Flowable<Void> postImage(String id, Bitmap bitmap);
 }

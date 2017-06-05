@@ -1,7 +1,7 @@
 package com.vitos.mvvm.api;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.LiveDataReactiveStreams;
 import android.graphics.Bitmap;
 
 import com.vitos.mvvm.api.repo.IRepositoryFactory;
@@ -13,10 +13,9 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Victor on 05.06.2017.
@@ -24,7 +23,7 @@ import rx.subscriptions.CompositeSubscription;
 
 public class Api {
 
-    private CompositeSubscription mCompositeSubscription = new CompositeSubscription();
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private IRepositoryFactory mRepositoryFactory;
 
 
@@ -34,12 +33,12 @@ public class Api {
 
     public void updateUser(final User user) {
         IUserRepository repository = mRepositoryFactory.getUserRepository();
-
-        mCompositeSubscription
+        mCompositeDisposable
                 .add(repository.updateUser(user)
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new BaseResultSubscriber<Void>(){
+                        .subscribeWith(new BaseDisposableSubscriber<Void>() {
+
                             @Override
                             public void postSuccessful(Void data) {
                                 EventBus.getDefault().post(new SuccessfulUserUpdateEvent(user));
@@ -49,19 +48,19 @@ public class Api {
 
     public LiveData<User> getUser(String id){
         final IUserRepository repository = mRepositoryFactory.getUserRepository();
-        return repository.getUser(id);
+        return LiveDataReactiveStreams.fromPublisher(repository.getUser(id));
         //     return Observable.defer(() -> repository.getUser(id));
     }
 
     public LiveData<List<User>> getAllUsers(){
         final IUserRepository repository = mRepositoryFactory.getUserRepository();
-        return repository.getAllUsers();
+        return LiveDataReactiveStreams.fromPublisher(repository.getAllUsers());
         //     return Observable.defer(() -> repository.getUser(id));
     }
 
     public void postImage(String id, Bitmap bitmap) {
         IUserRepository repository = mRepositoryFactory.getUserRepository();
-        mCompositeSubscription
+        mCompositeDisposable
                 .add(repository.postImage(id, bitmap)
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -71,7 +70,9 @@ public class Api {
     }
 
     public void cancelAll() {
-        mCompositeSubscription.unsubscribe();
-        mCompositeSubscription = new CompositeSubscription();
+        if (mCompositeDisposable!=null && !mCompositeDisposable.isDisposed()) {
+            mCompositeDisposable.dispose();
+        }
+        mCompositeDisposable = new CompositeDisposable();
     }
 }

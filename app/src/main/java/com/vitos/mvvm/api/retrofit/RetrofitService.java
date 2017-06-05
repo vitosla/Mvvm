@@ -1,8 +1,5 @@
 package com.vitos.mvvm.api.retrofit;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.OnLifecycleEvent;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.vitos.mvvm.BuildConfig;
@@ -12,6 +9,7 @@ import com.vitos.mvvm.tools.DateHelper;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Flowable;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -21,7 +19,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
-import rx.Observable;
 
 /**
  * Created by Victor on 05.06.2017.
@@ -48,22 +45,22 @@ public class RetrofitService implements IRetrofitService {
             .create(IRetrofitService.class);
 
     @Override
-    public Observable<Void> updateUser(@Body UserDTO value) {
+    public Flowable<Void> updateUser(@Body UserDTO value) {
         return mCaller.updateUser(value);
     }
 
     @Override
-    public LiveData<UserDTO> getUser(@Path("id") String id) {
+    public Flowable<UserDTO> getUser(@Path("id") String id) {
         return mCaller.getUser(id);
     }
 
     @Override
-    public LiveData<List<UserDTO>> getAllUsers() {
+    public Flowable<List<UserDTO>> getAllUsers() {
         return mCaller.getAllUsers();
     }
 
     @Override
-    public Observable<Void> postImage(@Path("id") String id, @Part MultipartBody.Part filePart) {
+    public Flowable<Void> postImage(@Path("id") String id, @Part MultipartBody.Part filePart) {
         return mCaller.postImage(id, filePart);
     }
 }

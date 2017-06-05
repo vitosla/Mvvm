@@ -15,20 +15,22 @@ import java.net.UnknownHostException;
 
 import javax.inject.Inject;
 
-import rx.Subscriber;
+import io.reactivex.subscribers.DisposableSubscriber;
+
 
 /**
  * Created by Victor on 05.06.2017.
  */
 
-abstract class BaseResultSubscriber<T> extends Subscriber<T> {
+abstract class BaseDisposableSubscriber<T> extends DisposableSubscriber<T> {
 
     @Inject
     Context mAppContext;
 
     @Override
-    public void onCompleted() { }
+    public void onComplete() {
 
+    }
 
     @Override
     public void onError(Throwable e) {

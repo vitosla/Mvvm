@@ -3,6 +3,9 @@ package com.vitos.mvvm.viewmodels;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.vitos.mvvm.MvvmApp;
+import com.vitos.mvvm.api.Api;
+import com.vitos.mvvm.api.repo.RepositoryFactory;
 import com.vitos.mvvm.models.User;
 
 import java.util.List;
@@ -13,9 +16,14 @@ import java.util.List;
 
 public class UserListViewModel extends ViewModel {
 
-    private LiveData<List<User>> mUsers;
+    Api mApi;
+
+    public UserListViewModel() {
+        mApi = MvvmApp.getAppComponent().getApi();
+        mApi.setRepositoryFactory(new RepositoryFactory());
+    }
 
     public LiveData<List<User>> getUsers(){
-        return mUsers;
+        return mApi.getAllUsers();
     }
 }
