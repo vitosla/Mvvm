@@ -1,15 +1,19 @@
 package com.vitos.mvvm.ui;
 
 import android.arch.lifecycle.LifecycleFragment;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
 
-import com.vitos.mvvm.models.User;
+import com.vitos.mvvm.R;
+import com.vitos.mvvm.ui.adapters.UserListAdapter;
 import com.vitos.mvvm.viewmodels.UserListViewModel;
 
-import java.util.List;
+import java.util.Collections;
 
 /**
  * Created by Victor on 05.06.2017.
@@ -18,15 +22,29 @@ import java.util.List;
 public class UserListFragment extends LifecycleFragment {
 
     private UserListViewModel mViewModel;
+    private ListView mListView;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_user_list, container, false);
+        mListView = (ListView) view.findViewById(R.id.lview);
+        return view;
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel.getUsers().observe(this, new Observer<List<User>>() {
-            @Override
-            public void onChanged(@Nullable List<User> users) {
 
-            }
+        mViewModel = ViewModelProviders.of(getActivity()).get(UserListViewModel.class);
+        mViewModel.getUsers().observe(this, users -> {
+            if (users == null) users = Collections.emptyList();
+            UserListAdapter adapter = new UserListAdapter(users);
+            mListView.setAdapter(adapter);
+        });
+
+        mListView.setOnClickListener(v -> {
+            //TODO
         });
     }
 }

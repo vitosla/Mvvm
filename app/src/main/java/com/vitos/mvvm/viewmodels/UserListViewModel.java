@@ -15,7 +15,6 @@ public class UserListViewModel extends ViewModel {
 
     private LiveData<List<User>> mUsers;
 
-
     public LiveData<List<User>> getUsers(){
         return mUsers;
     }

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/recycler_top_bottom_padding"
+    android:paddingTop="@dimen/recycler_top_bottom_padding">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="centerCrop"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/side_margin"
+        app:srcCompat="@drawable/detect"
+        tools:ignore="ContentDescription"
+        tools:targetApi="LOLLIPOP"
+        android:transitionName="profile"
+        android:src="#009900"
+        app:civ_border_color="@android:color/white"
+        app:civ_border_width="1dp"
+        android:layout_marginTop="2dp" />
+
+    <LinearLayout
+        android:id="@+id/ll_id_provider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="@dimen/side_margin"
+        android:layout_marginStart="@dimen/big_side_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:maxLines="2"
+            android:text="Id" />
+
+        <TextView
+            android:id="@+id/tv_provider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:maxLines="1"
+            android:text="Provider"
+            android:textSize="@dimen/side_margin" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_id_provider"
+        android:layout_marginEnd="@dimen/side_margin"
+        android:layout_marginStart="@dimen/big_side_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email" />
+
+        <TextView
+            android:id="@+id/tv_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/side_margin"
+            android:paddingStart="@dimen/side_margin"
+            android:text="v@m.r" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="side_margin">16dp</dimen>
+    <dimen name="big_side_margin">72dp</dimen>
+    <dimen name="recycler_top_bottom_padding">20dp</dimen>
+
+</resources>
