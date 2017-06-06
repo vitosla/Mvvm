@@ -3,6 +3,7 @@ package com.vitos.mvvm.api;
 import android.accounts.NetworkErrorException;
 import android.content.Context;
 
+import com.vitos.mvvm.MvvmApp;
 import com.vitos.mvvm.R;
 import com.vitos.mvvm.events.FailedEvent;
 import com.vitos.mvvm.tools.AppLog;
@@ -15,26 +16,29 @@ import java.net.UnknownHostException;
 
 import javax.inject.Inject;
 
-import io.reactivex.subscribers.DisposableSubscriber;
-
+import io.reactivex.observers.DisposableSingleObserver;
 
 /**
- * Created by Victor on 05.06.2017.
+ * Created by Victor on 06.06.2017.
  */
 
-public abstract class BaseDisposableSubscriber<T> extends DisposableSubscriber<T> {
+public abstract class BaseSingleObserver<T> extends DisposableSingleObserver<T> {
 
-    @Inject
     Context mAppContext;
 
-    @Override
-    public void onComplete() {
-
+    protected BaseSingleObserver() {
+        mAppContext = MvvmApp.getAppComponent().getContext();
     }
 
     @Override
-    public void onError(Throwable e) {
+    public void onSuccess(T data) {
+        onSingleSuccess(data);
+    }
 
+    public abstract void onSingleSuccess(T data);
+
+    @Override
+    public void onError(Throwable e) {
         String message = e.getMessage();
         AppLog.e(message);
 
@@ -53,13 +57,4 @@ public abstract class BaseDisposableSubscriber<T> extends DisposableSubscriber<T
 
         EventBus.getDefault().post(new FailedEvent(message));
     }
-
-
-    @Override
-    public void onNext(T data) {
-        postSuccessful(data);
-    }
-
-
-    public abstract void postSuccessful(T data);
 }

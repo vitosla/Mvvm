@@ -10,7 +10,9 @@ import com.vitos.mvvm.tools.DateHelper;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -47,22 +49,22 @@ public class RetrofitService implements IRetrofitService {
             .create(IRetrofitService.class);
 
     @Override
-    public Flowable<Void> updateUser(@Body UserDTO value) {
+    public Completable updateUser(@Body UserDTO value) {
         return mCaller.updateUser(value);
     }
 
     @Override
-    public Flowable<UserDTO> getUser(@Path("id") String id) {
+    public Single<UserDTO> getUser(@Path("id") String id) {
         return mCaller.getUser(id);
     }
 
     @Override
-    public Flowable<List<UserDTO>> getAllUsers() {
+    public Single<List<UserDTO>> getAllUsers() {
         return mCaller.getAllUsers();
     }
 
     @Override
-    public Flowable<Void> postImage(@Path("id") String id, @Part MultipartBody.Part filePart) {
+    public Completable postImage(@Path("id") String id, @Part MultipartBody.Part filePart) {
         return mCaller.postImage(id, filePart);
     }
 }

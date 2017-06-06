@@ -4,7 +4,9 @@ import com.vitos.mvvm.models.UserDTO;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -20,17 +22,17 @@ import retrofit2.http.Path;
 public interface IRetrofitService {
 
     @POST("/api/users")
-    Flowable<Void> updateUser(
+    Completable updateUser(
             @Body UserDTO value
     );
 
     @GET("/api/users/{id}")
-    Flowable<UserDTO> getUser(@Path("id") String id);
+    Single<UserDTO> getUser(@Path("id") String id);
 
     @GET("/api/users")
-    Flowable<List<UserDTO>> getAllUsers();
+    Single<List<UserDTO>> getAllUsers();
 
     @Multipart
     @POST("/api/users/{id}/image")
-    Flowable<Void> postImage(@Path("id") String id, @Part MultipartBody.Part filePart);
+    Completable postImage(@Path("id") String id, @Part MultipartBody.Part filePart);
 }

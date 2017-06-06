@@ -25,6 +25,5 @@ public interface AppComponent {
     RetrofitService getRetrofitService();
     Api getApi();
 
- //   void inject (MoxyPresenter moxyPresenter);
     void inject (RemoteUserRepository remoteUserRepository);
 }

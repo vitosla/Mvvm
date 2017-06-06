@@ -15,7 +15,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -36,27 +38,27 @@ public class RemoteUserRepository implements IUserRepository {
     }
 
     @Override
-    public Flowable<Void> updateUser(User user) {
+    public Completable updateUser(User user) {
         UserDTO value = new UserMapper().map(user);
         return mRetrofitService.updateUser(value);
     }
 
     @Override
-    public Flowable<User> getUser(String id) {
+    public Single<User> getUser(String id) {
         return mRetrofitService
                 .getUser(id)
                 .map(userDTO -> new UserMapper().map(userDTO));
     }
 
     @Override
-    public Flowable<List<User>> getAllUsers() {
+    public Single<List<User>> getAllUsers() {
         return mRetrofitService
                 .getAllUsers()
                 .map(userDTO -> new UserMapper().call(userDTO));
     }
 
     @Override
-    public Flowable<Void> postImage(String id, Bitmap bitmap) {
+    public Completable postImage(String id, Bitmap bitmap) {
         File file = ImageUtils.bitmapToFile(mAppContext, bitmap);
         MultipartBody.Part filePart = MultipartBody.Part.createFormData(
                 "file", file.getName(),

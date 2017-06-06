@@ -7,7 +7,9 @@ import com.vitos.mvvm.models.UserDTO;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 /**
  * Created by Victor on 05.06.2017.
@@ -15,11 +17,11 @@ import io.reactivex.Flowable;
 
 public interface IUserRepository {
 
-    Flowable<Void> updateUser(User user);
+    Completable updateUser(User user);
 
-    Flowable<User> getUser(String id);
+    Single<User> getUser(String id);
 
-    Flowable<List<User>> getAllUsers();
+    Single<List<User>> getAllUsers();
 
-    Flowable<Void> postImage(String id, Bitmap bitmap);
+    Completable postImage(String id, Bitmap bitmap);
 }

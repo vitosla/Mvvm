@@ -11,23 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.vitos.mvvm.R;
-import com.vitos.mvvm.api.BaseDisposableSubscriber;
-import com.vitos.mvvm.events.SuccessfulUserUpdateEvent;
-import com.vitos.mvvm.models.User;
 import com.vitos.mvvm.ui.adapters.UserListAdapter;
 import com.vitos.mvvm.viewmodels.UserListViewModel;
-
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.DisposableSubscriber;
-
-import static android.arch.lifecycle.LiveDataReactiveStreams.fromPublisher;
 
 /**
  * Created by Victor on 05.06.2017.
@@ -36,6 +21,7 @@ import static android.arch.lifecycle.LiveDataReactiveStreams.fromPublisher;
 public class UserListFragment extends LifecycleFragment {
 
     private UserListViewModel mViewModel;
+
     private ListView mListView;
 
     @Nullable
@@ -51,62 +37,13 @@ public class UserListFragment extends LifecycleFragment {
         super.onActivityCreated(savedInstanceState);
 
         mViewModel = ViewModelProviders.of(getActivity()).get(UserListViewModel.class);
+        mViewModel.getUsers().observe(this, users -> {
+            UserListAdapter adapter = new UserListAdapter(users);
+            mListView.setAdapter(adapter);
 
-//        mViewModel.getUser("3bace808c0f800ce")
-//                .subscribeOn(Schedulers.newThread())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeWith(new BaseDisposableSubscriber<Void>() {
-//
-//                    @Override
-//                    public void postSuccessful(Void user) {
-//                        EventBus.getDefault().post(new SuccessfulUserUpdateEvent(user));
-//                    }
-//                }));
-
-        mViewModel.getUsers()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSubscriber<List<User>>() {
-                    @Override
-                    public void onNext(List<User> users) {
-                        if (users == null) users = Collections.emptyList();
-                        UserListAdapter adapter = new UserListAdapter(users);
-                        mListView.setAdapter(adapter);
-
-                        mListView.setOnItemClickListener((parent, view, position, id) -> {
-                            //TODO
-                        });
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
-//        fromPublisher(mViewModel.getUser("3bace808c0f800ce")).observe(this, user -> {
-//            List<User> listUser = new ArrayList<>();
-//            if (user == null) {
-//                listUser = Collections.emptyList();
-//            } else {
-//                listUser.add(user);
-//            }
-//            UserListAdapter adapter = new UserListAdapter(listUser);
-//            mListView.setAdapter(adapter);
-//        });
-
-
-//        fromPublisher(mViewModel.getUsers()).observe(this, users -> {
-//            if (users == null) users = Collections.emptyList();
-//            UserListAdapter adapter = new UserListAdapter(users);
-//            mListView.setAdapter(adapter);
-//        });
-
-
+            mListView.setOnItemClickListener((parent, view, position, id) -> {
+                //TODO
+            });
+        });
     }
 }
