@@ -69,6 +69,7 @@ public class Api {
                 .map(userEntities -> new UserEntityMapper().callUser(userEntities))
                 .firstElement();
           //      .elementAt(0, new ArrayList<>());
+        //
 
         return Maybe.concat(dbEntities, netSource)
                 .takeUntil(users -> !users.isEmpty())
