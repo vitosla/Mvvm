@@ -3,12 +3,11 @@ package com.vitos.mvvm.models.repo;
 import android.graphics.Bitmap;
 
 import com.vitos.mvvm.models.User;
-import com.vitos.mvvm.models.UserDTO;
 
 import java.util.List;
 
 import io.reactivex.Completable;
-import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 
 /**
@@ -19,9 +18,9 @@ public interface IUserRepository {
 
     Completable updateUser(User user);
 
-    Single<User> getUser(String id);
+    Maybe<User> getUser(String id);
 
-    Single<List<User>> getAllUsers();
+    Maybe<List<User>> getAllUsers();
 
     Completable postImage(String id, Bitmap bitmap);
 }

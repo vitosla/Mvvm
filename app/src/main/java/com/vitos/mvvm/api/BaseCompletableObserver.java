@@ -14,8 +14,6 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
-import javax.inject.Inject;
-
 import io.reactivex.observers.ResourceCompletableObserver;
 
 /**

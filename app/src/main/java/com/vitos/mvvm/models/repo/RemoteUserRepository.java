@@ -16,7 +16,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
-import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -44,14 +44,14 @@ public class RemoteUserRepository implements IUserRepository {
     }
 
     @Override
-    public Single<User> getUser(String id) {
+    public Maybe<User> getUser(String id) {
         return mRetrofitService
                 .getUser(id)
                 .map(userDTO -> new UserMapper().map(userDTO));
     }
 
     @Override
-    public Single<List<User>> getAllUsers() {
+    public Maybe<List<User>> getAllUsers() {
         return mRetrofitService
                 .getAllUsers()
                 .map(userDTO -> new UserMapper().call(userDTO));

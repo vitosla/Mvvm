@@ -2,18 +2,30 @@ package com.vitos.mvvm.api;
 
 import android.graphics.Bitmap;
 
+import com.vitos.mvvm.MvvmApp;
 import com.vitos.mvvm.api.repo.IRepositoryFactory;
+import com.vitos.mvvm.db.AppDatabase;
+import com.vitos.mvvm.db.UserEntity;
+import com.vitos.mvvm.db.UserEntityMapper;
 import com.vitos.mvvm.events.SuccessfulUserUpdateEvent;
 import com.vitos.mvvm.models.User;
 import com.vitos.mvvm.models.repo.IUserRepository;
 
 import org.greenrobot.eventbus.EventBus;
+import org.reactivestreams.Publisher;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Flowable;
+import io.reactivex.Maybe;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -22,6 +34,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class Api {
 
+    private AppDatabase mDb = MvvmApp.getAppComponent().getDB();
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private IRepositoryFactory mRepositoryFactory;
 
@@ -44,14 +57,28 @@ public class Api {
                 }));
     }
 
-    public Single<User> getUser(String id){
+    public Maybe<User> getUser(String id){
         final IUserRepository repository = mRepositoryFactory.getUserRepository();
         return repository.getUser(id);
     }
 
-    public Single<List<User>> getAllUsers(){
+    public Maybe<List<User>> getAllUsers(){
         final IUserRepository repository = mRepositoryFactory.getUserRepository();
-        return repository.getAllUsers();
+        Maybe<List<User>> netSource = repository.getAllUsers();
+        Maybe<List<User>> dbEntities = mDb.userDao().getAllUsers()
+                .map(userEntities -> new UserEntityMapper().callUser(userEntities))
+                .firstElement();
+          //      .elementAt(0, new ArrayList<>());
+
+        return Maybe.concat(dbEntities, netSource)
+                .takeUntil(users -> !users.isEmpty())
+                .lastElement();
+//                .filter(users -> !users.isEmpty())
+//                .firstElement();
+
+           //     .toObservable();
+//                .filter(users -> !users.isEmpty())
+//                .first(new ArrayList<>());
     }
 
     public void postImage(String id, Bitmap bitmap) {

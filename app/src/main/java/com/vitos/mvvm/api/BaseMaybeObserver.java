@@ -14,28 +14,27 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
-import javax.inject.Inject;
-
+import io.reactivex.observers.DisposableMaybeObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 
 /**
  * Created by Victor on 06.06.2017.
  */
 
-public abstract class BaseSingleObserver<T> extends DisposableSingleObserver<T> {
+public abstract class BaseMaybeObserver<T> extends DisposableMaybeObserver<T> {
 
     Context mAppContext;
 
-    protected BaseSingleObserver() {
+    protected BaseMaybeObserver() {
         mAppContext = MvvmApp.getAppComponent().getContext();
     }
 
     @Override
     public void onSuccess(T data) {
-        onSingleSuccess(data);
+        onMaybeSuccess(data);
     }
 
-    public abstract void onSingleSuccess(T data);
+    public abstract void onMaybeSuccess(T data);
 
     @Override
     public void onError(Throwable e) {
@@ -56,5 +55,12 @@ public abstract class BaseSingleObserver<T> extends DisposableSingleObserver<T> 
         }
 
         EventBus.getDefault().post(new FailedEvent(message));
+    }
+
+    @Override
+    public void onComplete() {
+
+        int uu=0;
+        uu++;
     }
 }

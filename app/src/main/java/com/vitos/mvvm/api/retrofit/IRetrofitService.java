@@ -5,7 +5,7 @@ import com.vitos.mvvm.models.UserDTO;
 import java.util.List;
 
 import io.reactivex.Completable;
-import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import retrofit2.http.Body;
@@ -27,10 +27,10 @@ public interface IRetrofitService {
     );
 
     @GET("/api/users/{id}")
-    Single<UserDTO> getUser(@Path("id") String id);
+    Maybe<UserDTO> getUser(@Path("id") String id);
 
     @GET("/api/users")
-    Single<List<UserDTO>> getAllUsers();
+    Maybe<List<UserDTO>> getAllUsers();
 
     @Multipart
     @POST("/api/users/{id}/image")

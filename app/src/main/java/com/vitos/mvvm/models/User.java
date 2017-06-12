@@ -7,6 +7,7 @@ import com.vitos.mvvm.MvvmApp;
  */
 
 public class User {
+
     private String id;
     private String provider;
     private String email;
@@ -14,7 +15,6 @@ public class User {
     private String data;
     private String thumb;
     private String image;
-
 
     public User() { }
 

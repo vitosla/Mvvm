@@ -1,6 +1,9 @@
 package com.vitos.mvvm.di.modules;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
+
+import com.vitos.mvvm.db.AppDatabase;
 
 import javax.inject.Singleton;
 
@@ -24,5 +27,11 @@ public class ContextModule {
     @Singleton
     Context provideContext(){
         return mContext;
+    }
+
+    @Singleton
+    @Provides
+    AppDatabase provideAppDatabase (){
+        return Room.databaseBuilder(mContext, AppDatabase.class, "users").build();
     }
 }

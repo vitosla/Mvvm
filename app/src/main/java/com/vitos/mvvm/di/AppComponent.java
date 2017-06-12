@@ -4,10 +4,12 @@ import android.content.Context;
 
 import com.vitos.mvvm.api.Api;
 import com.vitos.mvvm.api.retrofit.RetrofitService;
+import com.vitos.mvvm.db.AppDatabase;
 import com.vitos.mvvm.di.modules.ApiModule;
 import com.vitos.mvvm.di.modules.ContextModule;
 import com.vitos.mvvm.di.modules.RetrofitModule;
 import com.vitos.mvvm.models.repo.RemoteUserRepository;
+import com.vitos.mvvm.viewmodels.UserListViewModel;
 
 import javax.inject.Singleton;
 
@@ -24,6 +26,8 @@ public interface AppComponent {
     Context getContext();
     RetrofitService getRetrofitService();
     Api getApi();
+    AppDatabase getDB();
 
     void inject (RemoteUserRepository remoteUserRepository);
+    void inject (UserListViewModel remoteUserRepository);
 }

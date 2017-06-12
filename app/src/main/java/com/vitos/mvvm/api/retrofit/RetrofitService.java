@@ -2,7 +2,6 @@ package com.vitos.mvvm.api.retrofit;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-//import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.vitos.mvvm.BuildConfig;
 import com.vitos.mvvm.models.UserDTO;
 import com.vitos.mvvm.tools.DateHelper;
@@ -11,18 +10,20 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
-import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-//import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+
+//import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+//import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 
 /**
  * Created by Victor on 05.06.2017.
@@ -54,12 +55,12 @@ public class RetrofitService implements IRetrofitService {
     }
 
     @Override
-    public Single<UserDTO> getUser(@Path("id") String id) {
+    public Maybe<UserDTO> getUser(@Path("id") String id) {
         return mCaller.getUser(id);
     }
 
     @Override
-    public Single<List<UserDTO>> getAllUsers() {
+    public Maybe<List<UserDTO>> getAllUsers() {
         return mCaller.getAllUsers();
     }
 
